@@ -42,10 +42,35 @@
 // @include     *leparisien.fr*
 // @include     *lest-eclair.fr*
 // @include     *courrier-picard.fr*
-// @version     1.3
+// @version     1.4
 // @require http://code.jquery.com/jquery-1.7.2.min.js
 // ==/UserScript==
 (function(){
+
+	function strip_tags(html){
+ 
+		//PROCESS STRING
+		if(arguments.length < 3) {
+			html=html.replace(/<\/?(?!\!)[^>]*>/gi, '');
+		} else {
+			var allowed = arguments[1];
+			var specified = eval("["+arguments[2]+"]");
+			if(allowed){
+				var regex='</?(?!(' + specified.join('|') + '))\b[^>]*>';
+				html=html.replace(new RegExp(regex, 'gi'), '');
+			} else{
+				var regex='</?(' + specified.join('|') + ')\b[^>]*>';
+				html=html.replace(new RegExp(regex, 'gi'), '');
+			}
+		}
+ 
+		//CHANGE NAME TO CLEAN JUST BECAUSE 
+		var clean_string = html;
+ 
+		//RETURN THE CLEAN STRING
+		return clean_string;
+	}
+	
 	function lcfirst (str) {
 	  str += '';
 	  var f = str.charAt(0).toLowerCase();
@@ -53,25 +78,27 @@
 	}
 	
 	function isPlural (str) {
-	  var indexLes = str.toLowerCase().indexOf('les');
-	  return indexLes != -1 && indexLes <= 2;
+	  var reg=new RegExp("^.{0,2}(les|des|ils|plusieurs|certains|tous|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) ","gi");
+	  return reg.test(str);
 	}
 
 	$('h1, h2').each(function() {
-		var element = $(this);
-		if( $('a', element).length ) {
-			element = $('a', element).first();
-		}
+		if ( Math.floor((Math.random()*2)+1) == 1 ) {
+			var element = $(this);
+			if( $('a', element).length ) {
+				element = $('a', element).first();
+			}
 		
-		var oldTitle = element.html();
-		var prefix;
-		if (isPlural(oldTitle)) {
-		  prefix = 'Ivres, ';
+			var oldTitle = element.html();
+			var prefix;
+			if (isPlural( strip_tags(oldTitle) )) {
+			  prefix = 'Ivres, ';
+			}
+			else {
+			  prefix = 'Ivre, ';
+			}
+			element.html(prefix + lcfirst( oldTitle ));
 		}
-		else {
-		  prefix = 'Ivre, ';
-		}
-		element.html(prefix + lcfirst( oldTitle ));
 	});
 	
 })();
