@@ -42,7 +42,7 @@
 // @include     *leparisien.fr*
 // @include     *lest-eclair.fr*
 // @include     *courrier-picard.fr*
-// @version     1.2
+// @version     1.3
 // @require http://code.jquery.com/jquery-1.7.2.min.js
 // ==/UserScript==
 (function(){
@@ -51,15 +51,27 @@
 	  var f = str.charAt(0).toLowerCase();
 	  return f + str.substr(1);
 	}
+	
+	function isPlural (str) {
+	  var indexLes = str.toLowerCase().indexOf('les');
+	  return indexLes != -1 && indexLes <= 2;
+	}
 
-	$('h1, h2').each(function(i, elt) {
-		if ( Math.floor((Math.random()*2)+1) == 1 ) {
-			var element = $(this);
-			if( $('a', element).length ) {
-				element = $('a', element).first();
-			}
-			element.html('Ivre, '+lcfirst( element.html() ));
+	$('h1, h2').each(function() {
+		var element = $(this);
+		if( $('a', element).length ) {
+			element = $('a', element).first();
 		}
+		
+		var oldTitle = element.html();
+		var prefix;
+		if (isPlural(oldTitle)) {
+		  prefix = 'Ivres, ';
+		}
+		else {
+		  prefix = 'Ivre, ';
+		}
+		element.html(prefix + lcfirst( oldTitle ));
 	});
 	
 })();
