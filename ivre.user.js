@@ -43,7 +43,7 @@
 // @include     *lest-eclair.fr*
 // @include     *courrier-picard.fr*
 // @include     *lepoint.fr*
-// @version     1.5
+// @version     1.6
 // @require http://code.jquery.com/jquery-1.7.2.min.js
 // ==/UserScript==
 (function(){
@@ -79,26 +79,37 @@
 	}
 	
 	function isPlural (str) {
-	  var reg=new RegExp("^.{0,2}(les|des|ils|plusieurs|certains|tous|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) ","gi");
+	  var reg=new RegExp("^.{0,2}(les|des|ils|plusieurs|certains|tous|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|[0-9]+) ","gi");
 	  return reg.test(str);
+	}
+	
+	function getPrefix(str) {
+	  if (isPlural( strip_tags(str) )) {
+	    return 'Ivres,';
+	  }
+	  else {
+	    return 'Ivre,';
+	  }
 	}
 
 	$('h1, h2').each(function() {
 		if ( Math.floor((Math.random()*2)+1) == 1 ) {
+			
 			var element = $(this);
 			if( $('a', element).length ) {
 				element = $('a', element).first();
 			}
 		
 			var oldTitle = element.html();
-			var prefix;
-			if (isPlural( strip_tags(oldTitle) )) {
-			  prefix = 'Ivres, ';
+			var newTitle = "";
+			str_array = oldTitle.split(":");
+			if (str_array.length > 1 ) {
+			    str_array[1] = ' ' + lcfirst(getPrefix(str_array[1])) + lcfirst(str_array[1]);
+			    newTitle = str_array.join(':');
+			} else {
+			    newTitle = getPrefix(oldTitle) + ' ' + lcfirst( oldTitle );
 			}
-			else {
-			  prefix = 'Ivre, ';
-			}
-			element.html(prefix + lcfirst( oldTitle ));
+			element.html(newTitle);
 		}
 	});
 	
