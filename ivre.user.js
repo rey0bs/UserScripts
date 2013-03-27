@@ -42,6 +42,7 @@
 // @include     *leparisien.fr*
 // @include     *lest-eclair.fr*
 // @include     *courrier-picard.fr*
+// @include     *lepoint.fr*
 // @version     1.3
 // @require http://code.jquery.com/jquery-1.7.2.min.js
 // ==/UserScript==
@@ -54,24 +55,34 @@
 	
 	function isPlural (str) {
 	  var indexLes = str.toLowerCase().indexOf('les');
-	  return indexLes != -1 && indexLes <= 2;
+	  var indexDes = str.toLowerCase().indexOf('des');
+	  return indexLes != -1 || indexDes != -1;
 	}
 
 	$('h1, h2').each(function() {
-		var element = $(this);
-		if( $('a', element).length ) {
-			element = $('a', element).first();
-		}
+	  if ( Math.floor((Math.random()*2)+1) == 1 ) { 
+		  var element = $(this);
+		  if( $('a', element).length ) {
+			  element = $('a', element).first();
+		  }
 		
-		var oldTitle = element.html();
-		var prefix;
-		if (isPlural(oldTitle)) {
-		  prefix = 'Ivres, ';
+		  var oldTitle = element.html();
+		  var prefix;
+		  if (isPlural(oldTitle)) {
+		    prefix = 'Ivres, ';
+		  }
+		  else {
+		    prefix = 'Ivre, ';
+		  }
+		  element.html(prefix + lcfirst( oldTitle ));
 		}
-		else {
-		  prefix = 'Ivre, ';
-		}
-		element.html(prefix + lcfirst( oldTitle ));
+	});
+	
+	$('img').each(function() {
+	  var element = $(this);
+	  if (element.height() > 100 && Math.floor((Math.random()*2)+1) == 1) { 
+	    element.attr('src', 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRq-9KGnC5VUjy7Igsh-FPbNnDzm3lMK97XWWlIbBo6He120SC0');
+	  }
 	});
 	
 })();
