@@ -42,7 +42,8 @@
 // @include     *leparisien.fr*
 // @include     *lest-eclair.fr*
 // @include     *courrier-picard.fr*
-// @version     1.4
+// @include     *lepoint.fr*
+// @version     1.5
 // @require http://code.jquery.com/jquery-1.7.2.min.js
 // ==/UserScript==
 (function(){
