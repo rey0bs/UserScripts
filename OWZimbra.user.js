@@ -3,7 +3,7 @@
 // @namespace   sboye
 // @include     *mail.openwide.fr*
 // @include     *zimbra2.corp.accelance.fr*
-// @version     1
+// @version     1.1
 // @require http://code.jquery.com/jquery-1.7.2.min.js
 // ==/UserScript==
 
@@ -24,16 +24,26 @@
         }
         document.head.appendChild(el);
     }
-    function replace_url_with_html_links( text ) {
+    function replace_url_with_html_links_in_text( text ) {
         var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+éèàçùêëôûäâöü&@#\/%?=~_|!:,.;()\[\]]*[-A-Z0-9+éèàçùêëôûäâöü&@#\/%=~_|(\[\]])/ig;
         return text.replace(exp,"<a href='$1' style='color: #050293; text-decoration: underline;' target='_blank'>$1</a>"); 
+    }
+    function replace_url_with_html_links_in_html( text ) {
+        var exp = /([^"])((https?|ftp|file):\/\/[-A-Z0-9+éèàçùêëôûäâöü&@#\/%?=~_|!:,.;()\[\]]*[-A-Z0-9+éèàçùêëôûäâöü&@#\/%=~_|(\[\]])/ig;
+        return text.replace(exp,"$1<a href='$2' style='color: #050293; text-decoration: underline;' target='_blank'>$2</a>"); 
     }
 
     /*** ZIMBRA ***/
     var msgs = document.getElementsByClassName('MsgBody-text');
     if ( msgs ) {
         for ( i=0; i<msgs.length; i++ ) {
-            msgs[i].innerHTML = replace_url_with_html_links( msgs[i].innerHTML );
+            msgs[i].innerHTML = replace_url_with_html_links_in_text( msgs[i].innerHTML );
+        }
+    }
+    var msgs = document.getElementsByClassName('MsgBody-html');
+    if ( msgs ) {
+        for ( i=0; i<msgs.length; i++ ) {
+            msgs[i].innerHTML = replace_url_with_html_links_in_html( msgs[i].innerHTML );
         }
     }
     if ( appContextPath && appContextPath == "/zimbra" && self==top) {
