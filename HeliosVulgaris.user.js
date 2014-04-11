@@ -2,11 +2,12 @@
 // @name        HeliosVulgaris
 // @namespace   sboye
 // @include     *helios*
-// @version     1.2
+// @include     *xguard*
+// @version     1.3
 // ==/UserScript==
 (function(){
 
-	var messages = document.querySelectorAll(".message-box-content-outer");
+	var messages = document.querySelectorAll(".message-box-content-outer, #listing .infocell td");
 	var reg1 = new RegExp("( +)(un|le|votre|notre|leur|ce|son|du)( +)([bcdfghjklmnpqrstvwxz]+)", "gim");
 	var reg1b = new RegExp("( +)(une|la|votre|notre|leur|cette|sa)( +)([bcdfghjklmnpqrstvwxz]+)", "gim");
 	var reg2 = new RegExp("( +)(une?|le|la|votre|notre|leur|ce|cette)( +)([aeiouyéèê]+)", "gim");
