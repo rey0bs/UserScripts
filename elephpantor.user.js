@@ -14,12 +14,12 @@ var filter   = Array.prototype.filter,
       return !!(!!bg.length && bg.search('url')>-1)
     });
 for (i = 0; i < filtered.length; i++) {
-  filtered[i].style.backgroundImage = 'url("http://placephant.com/'+max(16,filtered[i].offsetWidth%750)+'/'+max(15,filtered[i].offsetHeight%750)+'")';
+  filtered[i].style.backgroundImage = 'url("http://placephant.com/'+Math.max(16,filtered[i].offsetWidth%750)+'/'+Math.max(15,filtered[i].offsetHeight%750)+'")';
 }
 
 var imgs = document.querySelectorAll('img');
 for (i = 0; i < imgs.length; i++) {
-  imgs[i].src = 'http://placephant.com/'+max(14,imgs[i].offsetWidth%750)+'/'+max(17,imgs[i].offsetHeight%750);
+  imgs[i].src = 'http://placephant.com/'+Math.max(14,imgs[i].offsetWidth%750)+'/'+Math.max(17,imgs[i].offsetHeight%750);
 }
 	
 	
